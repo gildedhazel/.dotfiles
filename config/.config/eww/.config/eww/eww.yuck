@@ -1,0 +1,376 @@
+(include "end.yuck")
+(defwindow bar
+  :monitor 0
+  :geometry (geometry :x "0%" :y "0%" :width "100%" :height "30px" :anchor "top center")
+  :stacking "fg"
+  :windowtype "dock"
+  ;:reserve (struts :distance "10px" :side "top")
+  :exclusive true
+  (bar :screen 0)
+)
+
+
+(defwindow bar1
+  :monitor 1
+  :geometry (geometry :x "0%" :y "0%" :width "100%" :height "30px" :anchor "top center")
+  :stacking "fg"
+  :windowtype "dock"
+  ;:reserve (struts :distance "10px" :side "top")
+  :exclusive true
+  (bar1 :screen 1)
+)
+
+(defwindow bar2
+  :monitor 2
+  :geometry (geometry :x "0%" :y "0%" :width "100%" :height "30px" :anchor "top center")
+  :stacking "fg"
+  :windowtype "dock"
+  ;:reserve (struts :distance "10px" :side "top")
+  :exclusive true
+  (bar2 :screen 2)
+)
+
+(defwidget bar [screen]
+  (centerbox :class "bar" :orientation "h"
+    (centerbox :halign "start" :width 675
+      (centerbox :halign "start"
+        (cpu)
+        (ram)
+        (amd)
+      )
+      (box :halign "center"
+        (time)
+        (date)
+      )
+      (box :halign "end"
+        (workspaces-dp)
+      )
+    )
+    (focused-window-dp :halign "center")
+    (centerbox :halign "end"
+      ;(updates)
+      (box)
+      (network)
+      (speaker)
+    )
+  )
+)
+(defwidget bar1 [screen]
+  (centerbox :class "bar" :orientation "h"
+    (centerbox :halign "start" ;:width 675
+      (centerbox :halign "start"
+        (cpu)
+        (ram)
+        (amd)
+      )
+      (box :halign "center"
+        (time)
+        (date)
+      )
+      (box :halign "end"
+        ;(workspaces-dp-2)
+      )
+    )
+    (focused-window-dp-2 :halign "center")
+    (centerbox :halign "end"
+      ;(updates)
+      (box)
+      (network)
+      (speaker)
+    )
+  )
+)
+(defwidget bar2 [screen]
+  (centerbox :class "bar" :orientation "h"
+    (centerbox :halign "start" ;:width 675
+      (centerbox :halign "start"
+        (cpu)
+        (ram)
+        (amd)
+      )
+      (box :halign "center"
+        (time)
+        (date)
+      )
+      (box :halign "end"
+        (workspaces-hdmi)
+        ;(focused-window-hdmi :halign "center")
+      )
+    )
+    (focused-window-hdmi :halign "center")
+    ;(box)
+    (centerbox :halign "end"
+      ;(updates)
+      (box)
+      (network)
+      (speaker)
+    )
+  )
+)
+
+(deflisten dwl-focus-dp "./scripts/dwl-focus-dp.sh")
+(defwidget focused-window-dp []
+  (label :class "focused-window" :text {dwl-focus-dp})
+)
+(deflisten dwl-focus-dp-2 "./scripts/dwl-focus-dp-2.sh")
+(defwidget focused-window-dp-2 []
+  (label :class "focused-window" :text {dwl-focus-dp-2})
+)
+(deflisten dwl-focus-hdmi "./scripts/dwl-focus-hdmi.sh")
+(defwidget focused-window-hdmi []
+  (label :class "focused-window" :text {dwl-focus-hdmi})
+)
+
+(deflisten dwl-workspaces "./scripts/dwl-workspaces.sh")
+(defwidget workspaces []
+  (literal :class "workspaces" :content {dwl-workspaces})
+)
+
+(deflisten dwl-workspaces-dp "./scripts/dwl-workspaces-dp.sh")
+(defwidget workspaces-dp []
+  (literal :class "workspaces" :content {dwl-workspaces-dp})
+)
+(deflisten dwl-workspaces-dp-2 "./scripts/dwl-workspaces-dp-2.sh")
+(defwidget workspaces-dp-2 []
+  (literal :class "workspaces" :content {dwl-workspaces-dp-2})
+)
+(deflisten dwl-workspaces-hdmi "./scripts/dwl-workspaces-hdmi.sh")
+(defwidget workspaces-hdmi []
+  (literal :class "workspaces" :content {dwl-workspaces-hdmi})
+)
+
+(defpoll time_poll :interval "1s" "date +%H:%M")
+(defpoll date_poll :interval "1m" "date +%m/%d/%Y")
+(defpoll amd_poll :interval "1s" "./scripts/amd.sh")
+(deflisten player_listen :initial '{"show": "no", "content": ""}' "./scripts/player.sh")
+(deflisten notifications_listen :initial '{"show": "no", "content": ""}' "./scripts/notifications.sh")
+(deflisten network_listen "./scripts/network.sh wlp8s0")
+;(deflisten nvidia_listen "./scripts/nvidia.sh")
+;(defpoll updates_poll :initial "" :interval "15m" "./scripts/updates.sh &") 
+
+; Make this cleaner at some point
+(defpoll speaker_poll :interval "1s" "./scripts/speaker_test.sh")
+
+(defwidget icon-module [icon ?class ?visible]
+  (box :class "${class} icon-module"
+       :orientation "h"
+       :halign "end"
+       :space-evenly false
+       :visible {visible ?: true} ; because the argument is optional
+    (label :class "icon-module__icon" :text "${icon}")
+    (children)))
+
+(defwidget player []
+  (icon-module :class "player" :icon "" :visible {player_listen.show == "yes"}
+    (literal :content {player_listen.content})))
+
+(defwidget ram []
+  (icon-module :class "ram" :icon "" :visible {EWW_RAM.used_mem_perc != ""}
+    (label :text "${round(EWW_RAM.used_mem_perc, 0)}%")))
+
+(defwidget date []
+  (icon-module :class "date" :icon "" 
+    (label :text date_poll)))
+
+(defwidget time []
+  (icon-module :class "time" :icon "" 
+    (label :text time_poll))) 
+
+(defwidget amd []
+  (icon-module :class "amd" :icon "󱄄" 
+    (label :text amd_poll))) 
+
+(defwidget cpu []
+  (icon-module :class "cpu" :icon "" 
+    (label :text "${round(EWW_CPU.avg, 0)}%"))) 
+
+(defwidget network []
+  (icon-module :class "network" :icon "󰛳" 
+    (label :text network_listen))) 
+
+(defwidget speaker []
+  (icon-module :class "speaker" 
+               :icon {speaker_poll.icon}
+     (label :text {speaker_poll.content})))
+
+;(defwidget nvidia []
+;  (icon-module :class "nvidia" :icon "" 
+;    (label :text nvidia_listen))) 
+
+;(defwidget updates []
+;  (icon-module :class "updates" :icon "" :visible {updates_poll != ""}
+;    (label :text updates_poll))) 
+
+;(defwidget network []
+;  ;(icon-module :class "network" :icon ""
+;  (icon-module :class "network" :icon "󰛳"
+;    ;(label :text "${round(EWW_NET.wlan0.NET_UP / 1000000, 2)}/${round(EWW_NET.wlan0.NET_DOWN / 1000000, 2)}"))) 
+;    (label :text "${round(EWW_NET.wlp8s0.NET_UP / 1000000, 2)}/${round(EWW_NET.wlp8s0.NET_DOWN / 1000000, 2)}"))) 
+;(defwidget network []
+;  (icon-module :class "network" :icon "󰛳"
+;    (label :text "${round(EWW_NET.wlp8s0.NET_UP / 1000000, 2)}/${round(EWW_NET.wlp8s0.NET_DOWN / 1000000, 2)}"))) 
+;(defwidget speaker []
+;  (icon-module :class "speaker" 
+;               :icon {speaker_poll.icon}
+;    (eventbox :onscroll `eww update speaker_poll="$(./scripts/speaker_test.sh {})"`
+;      (button :onclick `eww update speaker_poll="$(./scripts/speaker_test.sh toogle)"`
+;        (label :text {speaker_poll.content})))))
+
+; ━━━━ windows ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+
+;(defwindow win0 :monitor 0
+;               :geometry (geometry :x 0 :y 0 :height "15px" :width "100%" :anchor "center top")
+;               :stacking "fg" 
+;               :exclusive true
+;               :focusable false
+;  (bar0 :monitor "eDP-1"))
+;
+;(defwindow win1 :monitor 0
+;               :geometry (geometry :x 0 :y 0 :height "15px" :width "100.01%" :anchor "center top")
+;               :stacking "fg" 
+;               :exclusive true
+;               :focusable false
+;  (bar0 :monitor "DP-2"))
+;
+;(defwindow win2 :monitor 0
+;               :geometry (geometry :x 0 :y 0 :height "15px" :width "100.01%" :anchor "center top")
+;               :stacking "fg" 
+;               :exclusive true
+;               :focusable false
+;  (bar0 :monitor "DP-2"))
+;
+;(defwindow win3 :monitor 0
+;               :geometry (geometry :x 0 :y 0 :height "15px" :width "100.01%" :anchor "center top")
+;               :stacking "fg" 
+;               :exclusive true
+;               :focusable false
+;  (bar0 :monitor "HDMI-A-1"))
+;(defwindow win4 :monitor 1
+;               :geometry (geometry :x 0 :y 0 :height "15px" :width "100.01%" :anchor "center top")
+;               :stacking "fg" 
+;               :exclusive true
+;               :focusable false
+;  (bar0 :monitor "DP-2"))
+;
+;; ━━━━ bars ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+;
+;(defwidget bar0 [monitor] 
+;  (box :orientation "h"
+;       :space-evenly true
+;       :class "bar"
+;    (box :class "left"
+;         :halign "start"
+;         :space-evenly false
+;         :spacing 15
+;      (workspaces :monitor monitor)
+;      (player))
+;    ;(box :class "center"
+;    ;     :halign "center"
+;    ;     :spacing 15
+;    ;  (player))
+;    (box :class "right"
+;         :halign "end"
+;         :spacing 15
+;         :space-evenly false
+;      (tray)
+;      (bluetooth)
+;      ;(wifi)
+;      (camera)
+;      (scaling-toggle :monitor monitor)
+;      (mic)
+;      (speakers)
+;      (battery)
+;      (time)
+;      (date))))
+;
+;; ━━━━ toggle-scaling ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+;
+;; niri msg -j outputs | jq -r '."DP-2".logical.scale'
+;
+;(defwidget scaling-toggle [monitor]
+;  (box :class "scaling-toggle"
+;    :space-evenly false
+;    (eventbox :cursor "pointer"
+;      (button :onclick "./scripts/scale-toggle.sh ${monitor}"
+;        (label :class "icon" :text "󰹑")))))
+;
+;; ━━━━ bluetooth ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+;
+;; Only show if: 
+;;   - player is chromium and status == Playing 
+;;   - at least one other player is running
+;;   - if response is "No players found", dont show
+;
+;(deflisten player :initial '{"status": "No players found", "title": "Song Name and Artist"}' "./scripts/player.sh")
+;
+;(defwidget player []
+;  (tooltip
+;    (label :class "tooltip" :text "${player.title}")
+;    (box :class "player" 
+;      :visible "${player.status != 'No players found'}"
+;      :space-evenly false
+;      (eventbox :cursor "pointer"
+;      (button :onclick "playerctl previous"
+;        (label :class "icon prev" :text "󰒮")))
+;      (eventbox :cursor "pointer"
+;      (button :onclick "playerctl play-pause"
+;        (label :class "icon ${player.status == "Paused" ? 'play' : 'pause'}" :text "${player.status == "Paused" ? '󰐊' : '󰏤'}")))
+;      (eventbox :cursor "pointer"
+;      (button :onclick "playerctl next"
+;        (label :class "icon next" :text "󰒭"))))))
+;
+;; ━━━━ tray ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+;
+;(defwidget tray []
+;  (box :class "tray"
+;    (systray)))
+;
+;; ━━━━ bluetooth ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+;
+;(defpoll bluetooth :initial '{"connected": false, "devices": ""}' :interval "20s" "./scripts/bluetooth.sh")
+;
+;(defwidget bluetooth []
+;  (tooltip
+;    (label :class "tooltip" :text "${bluetooth.connected == false ? 'Disconnected' : bluetooth.devices }")
+;    (box :class "bluetooth"
+;      :space-evenly false
+;      (label 
+;        :class "icon ${bluetooth.connected == false ? 'disconnected' : 'connected'} " 
+;        :text "${bluetooth.connected == false ? '󰂲' : '󰂰' }"))))
+;
+;; ━━━━ mic ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+;
+;(deflisten mic :initial 0  "./scripts/listen-mic.sh")
+;
+;(defwidget mic []
+;  (box :class "mic"
+;    :space-evenly false
+;    (eventbox :cursor "pointer"
+;      (button :class "mute-toggle"
+;              :onclick "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
+;        (label :class "icon single-icon ${mic == 2 ? 'running' : mic == 0 ? 'muted' : ''}"
+;               :text "${mic == 0 ? '󰍭' :  '󰍬' }")))))
+;
+;; ━━━━ volume ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+;
+;(deflisten speakers :initial '{ "volume": 0, "muted": "false" }' "./scripts/listen-volume.sh")
+;
+;(defwidget speakers []
+;  (tooltip 
+;    (label :class "tooltip" :text "${ speakers.volume }%")
+;    (box :class "speakers"
+;      :space-evenly false
+;      (button :class "icon ${ speakers.volume > 100 ? 'over' : '' } ${ speakers.muted ? 'muted' : '' }"
+;        :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"  
+;        (label :text "${ speakers.muted ? '󰖁' : 
+;                        speakers.volume > 70 ? '󰕾' : 
+;                        speakers.volume > 35 ? '󰖀' : 
+;                        '󰕿' }"))
+;
+;    (eventbox :cursor "pointer"
+;    (scale 
+;      :class "${ speakers.volume > 100 ? 'over' : '' }"
+;      :min 0  
+;      :max 100 
+;      :value "${speakers.volume}" 
+;      :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")))))
