@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DWLMSG="/home/hazel/.local/bin/dwlmsg"
+DWLMSG="$HOME/.local/bin/dwlmsg"
 MONITOR="DP-2"
 
 print_workspaces() {
