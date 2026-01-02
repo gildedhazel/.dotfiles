@@ -1,0 +1,240 @@
+@import "end.scss";
+// Gruvbox dark
+$rosewater: #d4be98; // Gruvbox light beige
+$flamingo: #ea6962; // Gruvbox light red
+$pink: #d3869b; // Gruvbox purple
+$mauve: #d3869b; // Gruvbox purple (reused as closest match)
+$red: #ea6962; // Gruvbox red
+$maroon: #c14a4a; // Gruvbox dark red
+$peach: #e78a4e; // Gruvbox orange
+$yellow: #d8a657; // Gruvbox yellow
+$green: #a9b665; // Gruvbox green
+$teal: #89b482; // Gruvbox aqua
+$sky: #89b482; // Gruvbox aqua (reused)
+$sapphire: #7daea3; // Gruvbox blue-green
+$blue: #7daea3; // Gruvbox blue
+$lavender: #89b482; // Gruvbox aqua (reused)
+//$text: #ebdbb2; // Gruvbox fg
+//$text: #f0aacd; // Gruvbox fg
+$text: #f4bbd0; // Gruvbox fg
+$subtext1: #d5c4a1; // Gruvbox fg1
+$subtext0: #bdae93; // Gruvbox fg2
+$overlay2: #a89984; // Gruvbox fg3
+$overlay1: #928374; // Gruvbox fg4
+$overlay0: #7c6f64; // Gruvbox gray
+$surface2: #504945; // Gruvbox bg2
+$surface1: #3c3836; // Gruvbox bg1
+$surface0: #32302f; // Gruvbox bg0_s
+//$base: #282828; // Gruvbox bg0
+$base: #2c2428; // Gruvbox bg0
+$mantle: #1d2021; // Gruvbox bg0_h
+$crust: #1b1b1b; // Gruvbox bg0_h (slightly darker)
+$white: #ffffff; // Gruvbox bg0_h (slightly darker)
+
+* {
+  all: unset;
+  font-family: "Hack Nerd Font";
+}
+
+window {
+  background-color: $base;
+}
+
+.bar {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+.icon-module {
+  margin: 0 5px;
+  & > &__icon {
+    margin-right: 7px;
+    font-size: 15px;
+    color: $text;
+  }
+}
+
+.workspaces {
+  margin: 5px 30px;
+
+  button {
+    margin: 0px 5px;
+  }
+
+  .focused {
+    color: $white;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .empty {
+    color: $text;
+    font-size: 15px;
+    font-weight: bold;
+  }
+}
+
+.cpu,
+.ram,
+.nvidia,
+.bluetooth,
+.time,
+.date,
+.tray,
+.updates,
+.speaker,
+.network,
+.player {
+  color: $white;
+  font-size: 15px;
+}
+
+.cpu,
+.ram,
+.nvidia {
+  margin-left: 10px;
+}
+
+.updates,
+.speaker,
+.network {
+  margin-right: 10px;
+}
+
+.focused-window {
+  color: $white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.player {
+  .icon.play {
+    color: $green;
+  }
+
+  .icon.pause {
+    color: $red;
+  }
+}
+
+
+
+.text {
+  font-size: 10px;
+}
+
+.tooltip {
+  background-color: $surface0;
+  color: $text;
+  font-size: 12px;
+}
+
+.bluetooth {
+  .icon.connected {
+    color: $green;
+  }
+}
+
+.icon.muted {
+  color: $red;
+}
+
+.wifi {
+  .icon.connected {
+    color: $green;
+  }
+}
+
+.tray image {
+  -gtk-icon-transform: scale(0.5);
+}
+
+//$foreground: #ffffff;
+//$grey: #aaaaaa;
+//$foreground-alt: #465059;
+//$background: #0e1419;
+//$black: #000000;
+//$red: #ff6565;
+//$green: #b8cc52;
+//$yellow: #e6c446;
+//$blue: #68d4ff;
+//$magenta: #ffa3aa;
+//$cyan: #36a3d9;
+//$white: #ffffff;
+
+//* {
+//  all: unset;
+//}
+//
+//window {
+//  background-color: $base;
+//}
+//
+//.bar {
+//  //font-family: "Noto Sans";
+//  font-size: 13px;
+//  margin: 0 10px;
+//}
+//
+//.icon-module {
+//  margin: 0 5px;
+//  & > &__icon {
+//    margin-right: 5px;
+//    //font-family: "Font Awesome 5 Free Solid";
+//  }
+//}
+//
+////.bar {
+////  background: #282a36;
+////  color: #f8f8f2;
+////  font-family: monospace;
+////  padding: 0 10px;
+////}
+//
+//.workspaces {
+//  font-size: 12px;
+//  margin-right: 20px;
+//
+//  button {
+//    margin: 0px 3px;
+//  }
+//
+//  .focused {
+//    color: $white;
+//  }
+//
+//  .empty {
+//    padding-top: 2px;
+//    color: $foreground-alt;
+//    font-size: 10px;
+////  font-family: "Font Awesome 5 Free Regular"
+//  }
+////.workspaces {
+////  //margin-right: 10px;
+////  background: #282a36;
+////  color: #f8f8f2;
+////  font-family: monospace;
+////  padding: 0 10px;
+////
+////  .ws-btn {
+////    padding: 0 8px;
+////    border-radius: 4px;
+////    margin-right: 2px;
+////
+////    &.focused {
+////      background: #44475a;
+////      font-weight: bold;
+////    }
+////
+////  }
+////}
+//
+//.focused-window {
+//  margin: 0 10px;
+//  font-weight: bold;
+//}
+//
+//.clock {
+//  margin-left: 10px;
+//}
+//

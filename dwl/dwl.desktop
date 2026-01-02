@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=dwl
+Comment=dwm for Wayland
+Exec=dwl -s /home/hazel/.local/bin/dwl-startup.sh
+Type=Application
