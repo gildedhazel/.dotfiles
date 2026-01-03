@@ -203,6 +203,7 @@
 
     # Media
     vlc
+    tidal-hifi
 
     # Discord Client
     vesktop
@@ -250,6 +251,12 @@
     settings.default_session.command = "${pkgs.greetd.tuigreet}/bin/tuigreet -c 'dwl -s ~/.dotfiles/scripts/dwl-startup.sh'";
   };
 
+  # Virtualization
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = ["hazel"];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+
   # Steam...enough said
   programs.steam = {
     enable = true;
@@ -266,5 +273,6 @@
       "steam-unwrapped"
       "steam-run"
       "widevine-cdm"
+      "castlabs-electron"
     ];
 }
