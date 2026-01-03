@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your Oh My Zsh installation.
-# ZSH=/usr/share/oh-my-zsh/
+ZSH=/usr/share/oh-my-zsh/
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
@@ -111,7 +111,7 @@ plugins=(
 #   mkdir $ZSH_CACHE_DIR
 # fi
 
-# source $ZSH/oh-my-zsh.sh
+#source $ZSH/oh-my-zsh.sh
 
 
 
@@ -126,7 +126,6 @@ plugins=(
 # }
 
 alias clear="unset NEW_LINE_BEFORE_PROMPT && clear"
-alias rebuild="sudo nixos-rebuild switch --flake ."
 
 function precmd() {
     # Print a newline before the prompt, unless it's the
@@ -143,4 +142,5 @@ alias rp="systemctl --user restart pipewire pipewire-pulse wireplumber"
 alias kf="killall -9 GameThread"
 alias km="killall -9 java; killall -9 minecraft-launcher"
 alias gpt='f() { ollama run gpt-oss:20b $* | glow --width 0 };f'
+alias rebuild="sudo nixos-rebuild switch --flake ."
 export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.local/lib/hyde:$PATH"
