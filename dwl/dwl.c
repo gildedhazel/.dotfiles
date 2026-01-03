@@ -1672,9 +1672,9 @@ focusclient(Client *c, int lift)
 		return;
 
 	/* Warp cursor to center of client if it is outside */
-	if (lift)
+	/*if (lift)
 		warpcursor(c);
-
+	*/
 	/* Raise client in stacking order if requested */
 	if (c && lift)
 		wlr_scene_node_raise_to_top(&c->scene->node);
