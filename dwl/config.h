@@ -146,6 +146,8 @@ static const char *mediaplaypause[] = { "playerctl", "play-pause", NULL };
 static const char *mediaprev[] = { "playerctl", "previous", NULL };
 static const char *medianext[] = { "playerctl", "next", NULL };
 
+/*static const int warpcursorenable = 1;*/
+
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
