@@ -216,6 +216,7 @@
     vkbasalt
     mesa-demos
     vulkan-tools
+    goverlay
   ];
 
   # Hack Nerd Font
