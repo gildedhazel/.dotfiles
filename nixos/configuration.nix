@@ -212,7 +212,10 @@
     stow
 
     # Used to reshade games using reshade-shaders
+    mangohud
     vkbasalt
+    mesa-demos
+    vulkan-tools
   ];
 
   # Hack Nerd Font
