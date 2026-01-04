@@ -210,6 +210,9 @@
 
     # Dotfiles Manager
     stow
+
+    # Used to reshade games using reshade-shaders
+    vkbasalt
   ];
 
   # Hack Nerd Font
