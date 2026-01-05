@@ -6,13 +6,13 @@
 (defvar end-reply-text '')
 
 (defwindow notification-frame
-  :monitor 0
+  :monitor 1
   :geometry (geometry 
     :x "0px"
     :y "0px"
     :width "480px"
     :height "0px"
-    :anchor "top right")
+    :anchor "top left")
   :stacking "fg"
   :windowtype "dialog"
   :passthrough true
@@ -20,14 +20,14 @@
   (literal :content end-notifications))
 
 (defwindow history-frame
-  :monitor 0
+  :monitor 1
   :class "end-history-frame"
   :geometry (geometry 
    :x "0px"
    :y "0px"
    :width "480px"
    :height "150px"
-   :anchor "top right")
+   :anchor "top left")
   :stacking "fg"
   :windowtype "dialog"
   :passthrough true
@@ -35,7 +35,7 @@
   (scroll :hscroll false :vscroll true (literal :content end-histories)))
 
 (defwindow reply-frame
-  :monitor 0
+  :monitor 1
   :geometry (geometry 
     :x "0px"
     :y "0px"
