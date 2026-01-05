@@ -271,6 +271,7 @@
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
+  programs.gamemode.enable = true;
 
   # You have to have this for specific programs. If you're missing this portion, it'll tell you when you go to rebuild
   nixpkgs.config.allowUnfreePredicate = pkg:

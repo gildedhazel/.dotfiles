@@ -7,4 +7,5 @@ chown hazel ..
 sudo cp /etc/nixos/hardware-configuration.nix ../nixos/
 sudo nixos-rebuild switch --flake ..
 
+./otherpackages.sh
 ./stow.sh
