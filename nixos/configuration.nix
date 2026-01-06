@@ -129,6 +129,9 @@
     wget
     git
 
+    # Manage user side of system
+    home-manager
+
     # My preferred terminal
     kitty
 
@@ -173,6 +176,7 @@
     xwayland
     wayland-scanner
     swaybg
+    swayidle
 
     # Status bar widget
     eww

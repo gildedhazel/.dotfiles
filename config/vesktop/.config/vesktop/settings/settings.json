@@ -5,11 +5,11 @@
     "themeLinks": [],
     "eagerPatches": false,
     "enabledThemes": [
-        "ArchTranslucence.theme.css"
+        "Translucence.theme.css"
     ],
     "enableReactDevtools": false,
     "frameless": false,
-    "transparent": false,
+    "transparent": true,
     "winCtrlQ": false,
     "disableMinSize": false,
     "winNativeTitleBar": false,
@@ -815,7 +815,7 @@
         "authenticated": true,
         "url": "https://api.vencord.dev/",
         "settingsSync": true,
-        "settingsSyncVersion": 1767530006030
+        "settingsSyncVersion": 1767642979764
     },
     "notifyAboutUpdates": true,
     "transparentUNSAFE_USE_AT_OWN_RISK": true
