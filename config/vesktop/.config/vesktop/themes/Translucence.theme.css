@@ -15,8 +15,8 @@
 :root {
 /* Basic app settings */
 	/* Background color/opacity (a is opacity) */
-	/*--app-bg: rgba(25,0,5,0.25);*/
-	--app-bg: rgba(0,0,0,.35)
+	--app-bg: rgba(44,36,40,0.7);
+	/*--app-bg: rgba(0,0,0,.35)*/
 
 	/* Not super sure, maybe the blur for the margin?
 	   Main background blur comes from MicaForEveryone */
@@ -31,9 +31,9 @@
 
 /* Accent color stuff; a lot is affected by this */
 	/* HSL is a common format here, just find a converter */
-	--accent-hue: 340;
-	--accent-saturation: 100%;
-	--accent-lightness: 75%;
+	--accent-hue: 337;
+	--accent-saturation: 72.15%;
+	--accent-lightness: 84.51%;
 	/* Essentially the a value from rgba; opacity of accent color */
 	--accent-opacity: 1;
 
