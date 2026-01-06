@@ -177,6 +177,7 @@
     wayland-scanner
     swaybg
     swayidle
+    dpms-off
 
     # Status bar widget
     eww
