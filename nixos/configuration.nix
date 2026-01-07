@@ -222,6 +222,8 @@
     mesa-demos
     vulkan-tools
     goverlay
+
+    btop
   ];
 
   # Hack Nerd Font
@@ -255,6 +257,17 @@
     package = pkgs.dwl.overrideAttrs {
       src = ../dwl;
     };
+  };
+
+  # xdg-desktop-portal to allow screencasts
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    config.dwl.default = lib.mkDefault [
+      "wlr"
+      "gtk"
+    ];
   };
 
   # Login scren; calls dwl-startup.sh script which sets everything up
