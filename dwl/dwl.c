@@ -397,6 +397,7 @@ static void zoom(const Arg *arg);
 static void rotatetags(const Arg *arg);
 
 /* variables */
+/*static const char cursor_theme = "BreezeX-RoséPineDawn";*/
 static const char broken[] = "broken";
 static pid_t child_pid = -1;
 static int locked;
@@ -578,7 +579,7 @@ arrange(Monitor *m)
 		m->lt[m->sellt]->arrange(m);
 	motionnotify(0, NULL, 0, 0, 0, 0);
 	checkidleinhibitor(NULL);
-	/*warpcursor(focustop(selmon));*/
+	warpcursor(focustop(selmon));
 }
 
 void
@@ -1672,9 +1673,9 @@ focusclient(Client *c, int lift)
 		return;
 
 	/* Warp cursor to center of client if it is outside */
-	/*if (lift)
+	if (lift)
 		warpcursor(c);
-	*/
+	
 	/* Raise client in stacking order if requested */
 	if (c && lift)
 		wlr_scene_node_raise_to_top(&c->scene->node);
@@ -2986,7 +2987,8 @@ setup(void)
 	 * Xcursor themes to source cursor images from and makes sure that cursor
 	 * images are available at all scale factors on the screen (necessary for
 	 * HiDPI support). Scaled cursors will be loaded with each output. */
-	cursor_mgr = wlr_xcursor_manager_create(NULL, 24);
+	/*cursor_mgr = wlr_xcursor_manager_create(NULL, 24);*/
+	cursor_mgr = wlr_xcursor_manager_create("BreezeX-RoséPineDawn", 24);
 	setenv("XCURSOR_SIZE", "24", 1);
 
 	/*
