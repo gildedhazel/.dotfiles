@@ -6,13 +6,13 @@
 (defvar end-reply-text '')
 
 (defwindow notification-frame
-  :monitor 1
+  :monitor 2
   :geometry (geometry 
     :x "0px"
     :y "0px"
-    :width "480px"
+    :width "450px"
     :height "0px"
-    :anchor "top left")
+    :anchor "top right")
   :stacking "fg"
   :windowtype "dialog"
   :passthrough true
@@ -20,14 +20,14 @@
   (literal :content end-notifications))
 
 (defwindow history-frame
-  :monitor 1
+  :monitor 2
   :class "end-history-frame"
   :geometry (geometry 
    :x "0px"
    :y "0px"
-   :width "480px"
+   :width "450px"
    :height "150px"
-   :anchor "top left")
+   :anchor "top right")
   :stacking "fg"
   :windowtype "dialog"
   :passthrough true
@@ -35,11 +35,11 @@
   (scroll :hscroll false :vscroll true (literal :content end-histories)))
 
 (defwindow reply-frame
-  :monitor 1
+  :monitor 2
   :geometry (geometry 
     :x "0px"
     :y "0px"
-    :width "480px"
+    :width "450px"
     :height "0px"
     :anchor "center")
   :stacking "fg"
@@ -82,6 +82,8 @@
           :path {notification.icon}; end sets this property if the notification contains an image
           :image-width 100
           :image-height 100
+          ;:image-width 50
+          ;:image-height 50
         )
         (box
           :class "content-box"

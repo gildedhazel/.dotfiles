@@ -224,6 +224,8 @@
     goverlay
 
     btop
+
+    rose-pine-cursor
   ];
 
   # Hack Nerd Font
@@ -263,7 +265,7 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr];
     config.dwl.default = lib.mkDefault [
       "wlr"
       "gtk"

@@ -48,7 +48,6 @@
     )
     (focused-window-dp :halign "center")
     (centerbox :halign "end"
-      ;(updates)
       (box)
       (network)
       (speaker)
@@ -73,7 +72,6 @@
     )
     (focused-window-dp-2 :halign "center")
     (centerbox :halign "end"
-      ;(updates)
       (box)
       (network)
       (speaker)
@@ -100,7 +98,7 @@
     (focused-window-hdmi :halign "center")
     ;(box)
     (centerbox :halign "end"
-      ;(updates)
+    ;(box :halign "end"
       (box)
       (network)
       (speaker)
@@ -128,19 +126,19 @@
 
 (deflisten dwl-workspaces-dp "./scripts/dwl-workspaces-dp.sh")
 (defwidget workspaces-dp []
-  (literal :class "workspaces" :content {dwl-workspaces-dp})
+  (label :class "workspaces" :text {dwl-workspaces-dp})
 )
 (deflisten dwl-workspaces-dp-2 "./scripts/dwl-workspaces-dp-2.sh")
 (defwidget workspaces-dp-2 []
-  (literal :class "workspaces" :content {dwl-workspaces-dp-2})
+  (label :class "workspaces" :text {dwl-workspaces-dp-2})
 )
 (deflisten dwl-workspaces-hdmi "./scripts/dwl-workspaces-hdmi.sh")
 (defwidget workspaces-hdmi []
-  (literal :class "workspaces" :content {dwl-workspaces-hdmi})
+  (label :class "workspaces" :text {dwl-workspaces-hdmi})
 )
 
 (defpoll time_poll :interval "1s" "date +%H:%M")
-(defpoll date_poll :interval "1m" "date +%m/%d/%Y")
+(defpoll date_poll :interval "1m" "date +%m/%d/%y")
 (defpoll amd_poll :interval "1s" "./scripts/amd.sh")
 (deflisten player_listen :initial '{"show": "no", "content": ""}' "./scripts/player.sh")
 (deflisten notifications_listen :initial '{"show": "no", "content": ""}' "./scripts/notifications.sh")
