@@ -208,7 +208,6 @@
 
     # Media
     vlc
-    tidal-hifi
 
     # Discord Client
     vesktop
@@ -226,6 +225,8 @@
     btop
 
     rose-pine-cursor
+
+    libreoffice
   ];
 
   # Hack Nerd Font

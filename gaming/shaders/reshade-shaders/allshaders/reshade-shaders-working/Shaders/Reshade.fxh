@@ -1,1 +1,0 @@
-/home/lee/Files/work/allshaders/reshade-shaders/Shaders/ReShade.fxh
