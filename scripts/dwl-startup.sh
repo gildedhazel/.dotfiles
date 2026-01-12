@@ -17,7 +17,7 @@ wlr-randr --output DP-1 --mode 2560x1440@300 --pos 1920,240
 eww open bar
 eww open bar1
 eww open bar2
-~/.cargo/bin/end-rs daemon &
+# ~/.cargo/bin/end-rs daemon &
 swaybg --output '*' --mode center  --image $HOME/.dotfiles/wallpapers/EIA4Kv2.png &
 swayidle timeout 4500 "dpms-off" &
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=wlroots
