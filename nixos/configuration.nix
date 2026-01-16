@@ -185,6 +185,10 @@
     # Application launcher
     rofi
 
+    # Notification daemon
+    dunst
+    libnotify
+
     # Allows for easy sh scriptable monitor config
     wlr-randr
     amdgpu_top
