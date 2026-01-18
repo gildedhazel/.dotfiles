@@ -266,6 +266,8 @@
     };
   };
 
+  services.flatpak.enable = true;
+
   # xdg-desktop-portal to allow screencasts
   xdg.portal = {
     enable = true;

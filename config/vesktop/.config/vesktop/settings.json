@@ -3,10 +3,11 @@
     "minimizeToTray": false,
     "arRPC": true,
     "enableSplashScreen": false,
-    "splashBackground": "rgba(0, 0, 0, 0)",
+    "splashBackground": "rgb(18, 18, 20)",
     "splashColor": "rgb(239, 239, 241)",
     "spellCheckLanguages": [
         "en-US",
         "en"
-    ]
+    ],
+    "hardwareAcceleration": true
 }
