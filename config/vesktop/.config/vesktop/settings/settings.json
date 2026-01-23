@@ -799,7 +799,8 @@
             "enabled": true
         },
         "WebScreenShareFixes": {
-            "enabled": true
+            "enabled": true,
+            "experimentalAV1Support": false
         }
     },
     "uiElements": {
@@ -816,7 +817,7 @@
         "authenticated": true,
         "url": "https://api.vencord.dev/",
         "settingsSync": true,
-        "settingsSyncVersion": 1768616383617
+        "settingsSyncVersion": 1769044338536
     },
     "notifyAboutUpdates": true,
     "transparentUNSAFE_USE_AT_OWN_RISK": true

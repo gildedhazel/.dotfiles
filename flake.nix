@@ -3,33 +3,31 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     self,
     nixpkgs,
+    home-manager,
     ...
   }: let
     lib = nixpkgs.lib;
-    supportedSystems = ["x86_64-linux"];
-    forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-    pkgsFor = nixpkgs.legacyPackages;
-    # pkgs = import nixpkgs {
-    #   config = {};
-    #   overlay = [];
-    # };
-    # dwlmsg-build = nixpkgs.callPackage ./dwlmsg/dwlmsg-build.nix {};
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
   in {
     nixosConfigurations = {
       nixos = lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         modules = [./nixos/configuration.nix];
       };
     };
-    packages = forAllSystems (system: {
-      end-rs = pkgsFor.${system}.callPackage ./end-rs {};
-    });
-    # end-rs = pkgsFor.${system}.callPackage ./end-rs {};
-    # dwlmsg = dwlmsg-build;
+    homeConfigurations = {
+      hazel = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [./nixos/home.nix];
+      };
+    };
   };
 }

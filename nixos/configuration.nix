@@ -207,6 +207,7 @@
       plugins = with pkgs.obs-studio-plugins; [
         wlrobs
         obs-vaapi
+        obs-vkcapture
       ];
     })
 
@@ -215,6 +216,7 @@
 
     # Discord Client
     vesktop
+    discord
 
     # Dotfiles Manager
     stow
@@ -231,6 +233,7 @@
     rose-pine-cursor
 
     libreoffice
+    fzf
   ];
 
   # Hack Nerd Font
@@ -309,5 +312,6 @@
       "steam-run"
       "widevine-cdm"
       "castlabs-electron"
+      "discord"
     ];
 }

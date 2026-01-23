@@ -9,5 +9,6 @@
         "en-US",
         "en"
     ],
-    "hardwareAcceleration": true
+    "hardwareAcceleration": true,
+    "hardwareVideoAcceleration": false
 }
