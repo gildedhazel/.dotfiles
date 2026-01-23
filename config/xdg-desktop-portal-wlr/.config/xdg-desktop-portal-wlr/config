@@ -1,5 +1,5 @@
 [screencast]
 output_name=DP-1
-max_fps=60
+max_fps=300
 chooser_type=simple
 chooser_cmd=slurp -f 'Monitor %o' -or
