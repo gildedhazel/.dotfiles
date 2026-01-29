@@ -143,6 +143,7 @@ alias kf="killall -9 GameThread"
 alias km="killall -9 java; killall -9 minecraft-launcher"
 alias gpt='f() { ollama run gpt-oss:20b $* | glow --width 0 };f'
 alias rebuild="sudo nixos-rebuild switch --flake ."
+alias reww="eww close-all; eww open-many bar bar1 bar2"
 export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.local/lib/hyde:$PATH"
 export VKBASALT_CONFIG_FILE=$HOME/.dotfiles/gaming/shaders/vkBasalt.conf
 export XDG_DATA_DIRS=$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share
