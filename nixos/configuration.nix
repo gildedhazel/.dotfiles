@@ -1,12 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ config, lib, pkgs, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -107,19 +102,17 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # ---------------------------------------------------------------------------------------------------------------------------
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.hazel = {
     description = "Hazel";
     isNormalUser = true;
-    extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh;
     home = "/home/hazel";
-    packages = with pkgs; [
-      tree
-    ];
+    packages = with pkgs; [ tree ];
   };
 
   # List packages installed in system profile.
@@ -201,6 +194,8 @@
     gcc
     unzip
     python3
+    nixfmt-rfc-style
+    nixd
 
     # OBS Studio
     (pkgs.wrapOBS {
@@ -234,17 +229,17 @@
 
     libreoffice
     fzf
+
+    home-manager
   ];
+
+  services.btrfs.autoScrub.enable = true;
 
   # Hack Nerd Font
-  fonts.packages = with pkgs; [
-    nerd-fonts.hack
-  ];
+  fonts.packages = with pkgs; [ nerd-fonts.hack ];
 
   # Neovim
-  programs.neovim = {
-    enable = true;
-  };
+  programs.neovim = { enable = true; };
   # Allows Mason to install a few Neovim LSPs/Formatters
   programs.npm.enable = true;
 
@@ -264,9 +259,7 @@
   # DWL is my preferred WM, and it's pulling from a local directory with my custom config
   programs.dwl = {
     enable = true;
-    package = pkgs.dwl.overrideAttrs {
-      src = ../dwl;
-    };
+    package = pkgs.dwl.overrideAttrs { src = ../dwl; };
   };
 
   services.flatpak.enable = true;
@@ -275,22 +268,20 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr];
-    config.dwl.default = lib.mkDefault [
-      "wlr"
-      "gtk"
-    ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
+    config.dwl.default = lib.mkDefault [ "wlr" "gtk" ];
   };
 
   # Login scren; calls dwl-startup.sh script which sets everything up
   services.greetd = {
     enable = true;
-    settings.default_session.command = "${pkgs.greetd.tuigreet}/bin/tuigreet -c 'dwl -s ~/.dotfiles/scripts/dwl-startup.sh'";
+    settings.default_session.command =
+      "${pkgs.greetd.tuigreet}/bin/tuigreet -c 'dwl -s ~/.dotfiles/scripts/dwl-startup.sh'";
   };
 
   # Virtualization
   programs.virt-manager.enable = true;
-  users.groups.libvirtd.members = ["hazel"];
+  users.groups.libvirtd.members = [ "hazel" ];
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 

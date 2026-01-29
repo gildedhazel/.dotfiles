@@ -19,6 +19,7 @@ vim.lsp.config['yuck'] = {
   filetypes = { 'yuck' },
 }
 vim.lsp.enable 'yuck'
+vim.lsp.enable('nixd')
 
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
@@ -347,7 +348,8 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'isort',
         'black',
-        'alejandra',
+        -- 'alejandra',
+        'nixfmt',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('mason-lspconfig').setup {
@@ -397,7 +399,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'isort', 'black' },
-        nix = { 'alejandra' },
+        nix = { 'nixfmt' },
       },
     },
   },
