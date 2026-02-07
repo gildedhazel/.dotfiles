@@ -235,6 +235,8 @@
     tor-browser
 
     deadlock-mod-manager
+
+    git-filter-repo
   ];
 
   services.btrfs.autoScrub.enable = true;
