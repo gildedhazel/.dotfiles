@@ -231,6 +231,10 @@
     fzf
 
     home-manager
+
+    tor-browser
+
+    deadlock-mod-manager
   ];
 
   services.btrfs.autoScrub.enable = true;

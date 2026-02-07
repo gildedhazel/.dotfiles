@@ -4,7 +4,7 @@
     "arRPC": true,
     "enableSplashScreen": false,
     "splashBackground": "rgb(18, 18, 20)",
-    "splashColor": "rgb(239, 239, 241)",
+    "splashColor": "rgb(219, 219, 219)",
     "spellCheckLanguages": [
         "en-US",
         "en"
