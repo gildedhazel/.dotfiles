@@ -237,6 +237,7 @@
     deadlock-mod-manager
 
     git-filter-repo
+    kdePackages.dolphin
   ];
 
   services.btrfs.autoScrub.enable = true;
