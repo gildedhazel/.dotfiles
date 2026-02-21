@@ -230,8 +230,6 @@
     libreoffice
     fzf
 
-    home-manager
-
     tor-browser
 
     deadlock-mod-manager
@@ -300,6 +298,8 @@
     localNetworkGameTransfers.openFirewall = true;
   };
   programs.gamemode.enable = true;
+
+  stylix.enable = true;
 
   # You have to have this for specific programs. If you're missing this portion, it'll tell you when you go to rebuild
   nixpkgs.config.allowUnfreePredicate = pkg:

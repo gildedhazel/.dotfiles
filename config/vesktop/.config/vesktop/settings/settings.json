@@ -409,7 +409,8 @@
                             "1066707847548784702",
                             "751683429413945404",
                             "1458807391033364593",
-                            "428020016127016962"
+                            "428020016127016962",
+                            "1473691796084101273"
                         ]
                     },
                     {
@@ -823,7 +824,7 @@
         "authenticated": true,
         "url": "https://api.vencord.dev/",
         "settingsSync": true,
-        "settingsSyncVersion": 1770576901715
+        "settingsSyncVersion": 1771425972332
     },
     "notifyAboutUpdates": true,
     "transparentUNSAFE_USE_AT_OWN_RISK": true

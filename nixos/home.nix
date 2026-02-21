@@ -42,6 +42,11 @@ in {
     extraConfig = "";
   };
 
+  stylix = {
+    enable = true;
+    image = ../../wallpapers/EIA4Kv2.png;
+  };
+
   home.stateVersion = "25.11";
   programs.home-manager.enable = true;
 }
