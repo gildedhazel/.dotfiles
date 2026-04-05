@@ -1,7 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -102,7 +108,10 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # ---------------------------------------------------------------------------------------------------------------------------
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -232,10 +241,15 @@
 
     tor-browser
 
-    deadlock-mod-manager
-
     git-filter-repo
     kdePackages.dolphin
+
+    firefox
+    strawberry
+
+    rdfind
+    fd
+    zip
   ];
 
   services.btrfs.autoScrub.enable = true;
@@ -244,7 +258,9 @@
   fonts.packages = with pkgs; [ nerd-fonts.hack ];
 
   # Neovim
-  programs.neovim = { enable = true; };
+  programs.neovim = {
+    enable = true;
+  };
   # Allows Mason to install a few Neovim LSPs/Formatters
   programs.npm.enable = true;
 
@@ -267,21 +283,32 @@
     package = pkgs.dwl.overrideAttrs { src = ../dwl; };
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      qutebrowser = prev.qutebrowser.override { enableWideVine = true; };
+    })
+  ];
+
   services.flatpak.enable = true;
 
   # xdg-desktop-portal to allow screencasts
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
-    config.dwl.default = lib.mkDefault [ "wlr" "gtk" ];
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-wlr
+    ];
+    config.dwl.default = lib.mkDefault [
+      "wlr"
+      "gtk"
+    ];
   };
 
   # Login scren; calls dwl-startup.sh script which sets everything up
   services.greetd = {
     enable = true;
-    settings.default_session.command =
-      "${pkgs.greetd.tuigreet}/bin/tuigreet -c 'dwl -s ~/.dotfiles/scripts/dwl-startup.sh'";
+    settings.default_session.command = "${pkgs.greetd.tuigreet}/bin/tuigreet -c 'dwl -s ~/.dotfiles/scripts/dwl-startup.sh'";
   };
 
   # Virtualization
@@ -289,6 +316,7 @@
   users.groups.libvirtd.members = [ "hazel" ];
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
+  virtualisation.docker.enable = true;
 
   # Steam...enough said
   programs.steam = {
@@ -299,10 +327,15 @@
   };
   programs.gamemode.enable = true;
 
-  stylix.enable = true;
+  stylix = {
+    enable = true;
+    base16Scheme = ./palette.json;
+    polarity = "dark";
+  };
 
   # You have to have this for specific programs. If you're missing this portion, it'll tell you when you go to rebuild
-  nixpkgs.config.allowUnfreePredicate = pkg:
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
     builtins.elem (lib.getName pkg) [
       "steam"
       "steam-original"

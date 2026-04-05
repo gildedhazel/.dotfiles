@@ -11,31 +11,35 @@ let
       sha256 = "sha256-LQovIDU+dC0O7hf8cc/9Wfd7eVLeMmoxWd9N/VjFMSA=";
     };
   };
-in {
+in
+{
   home.username = "hazel";
   home.homeDirectory = "/home/hazel";
 
-  gtk = {
-    enable = true;
-    cursorTheme = {
-      name = "Rose Pine Cursor";
-      package = pkgs.rose-pine-cursor;
-    };
-    gtk3.extraConfig = {
-      Settings = ''
-        gtk-application-prefer-dark-theme=1
-      '';
-    };
-    gtk4.extraConfig = {
-      Settings = ''
-        gtk-application-prefer-dark-theme=1
-      '';
-    };
-  };
+  # gtk = {
+  #   enable = true;
+  #   cursorTheme = {
+  #     name = "Rose Pine Cursor";
+  #     package = pkgs.rose-pine-cursor;
+  #   };
+  #   gtk3.extraConfig = {
+  #     Settings = ''
+  #       gtk-application-prefer-dark-theme=1
+  #     '';
+  #   };
+  #   gtk4.extraConfig = {
+  #     Settings = ''
+  #       gtk-application-prefer-dark-theme=1
+  #     '';
+  #   };
+  # };
 
   programs.tmux = {
     enable = true;
-    plugins = with pkgs; [ tmuxPlugins.resurrect tmux-everforest ];
+    plugins = with pkgs; [
+      tmuxPlugins.resurrect
+      tmux-everforest
+    ];
     clock24 = true;
     keyMode = "vi";
     escapeTime = 10;
@@ -44,7 +48,7 @@ in {
 
   stylix = {
     enable = true;
-    image = ../../wallpapers/EIA4Kv2.png;
+    base16Scheme = ./palette.json;
   };
 
   home.stateVersion = "25.11";

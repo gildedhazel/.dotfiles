@@ -13,25 +13,34 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, stylix, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      stylix,
+      ...
+    }:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
-    in {
+    in
+    {
       nixosConfigurations = {
         nixos = lib.nixosSystem {
           inherit system;
           modules = [
             ./nixos/configuration.nix
+            stylix.nixosModules.stylix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.hazel = ./nixos/home.nix;
             }
-            stylix.nixosModules.stylix
           ];
         };
       };
+
     };
 }
