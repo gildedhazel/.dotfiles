@@ -48,7 +48,7 @@ in
 
   stylix = {
     enable = true;
-    base16Scheme = ./palette.json;
+    base16Scheme = ./theme.yaml;
   };
 
   home.stateVersion = "25.11";
