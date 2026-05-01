@@ -8,5 +8,7 @@ config_version: 2
 settings:
   content.media.audio_video_capture:
     https://video.simplepractice.com: true
+  content.mouse_lock:
+    https://loadout.tf: false
   url.default_page:
     global: https://kagi.com

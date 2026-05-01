@@ -7,6 +7,10 @@
   pkgs,
   ...
 }:
+
+# ---------------------------------------------------------------------------------------------------------------------------
+# Below are the standard settings in a configuration file by default, mostly. You shouldn't need to change much in here
+
 {
   imports = [
     # Include the results of the hardware scan.
@@ -20,8 +24,11 @@
   # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # Define on which hard drive you want to install Grub.
   # boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
+
+  # We want systemd, hence the line below. It does have a requirement, so look that up
   boot.loader.systemd-boot.enable = true;
 
+  # Computer name. Simple as.
   networking.hostName = "nixos"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
@@ -89,6 +96,9 @@
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
 
+  # ---------------------------------------------------------------------------------------------------------------------------
+  # Version and experimental features. Leave all of this alone, unless your installed version is different
+
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #
@@ -114,6 +124,8 @@
   ];
 
   # ---------------------------------------------------------------------------------------------------------------------------
+  # Generally, this is the only section you should need to edit substantially
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.hazel = {
     description = "Hazel";
@@ -126,7 +138,9 @@
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
+  # I also like https://mynixos.com as a resource. Try to use this one primarily
   environment.systemPackages = with pkgs; [
+    # Just leave these all here
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
@@ -156,17 +170,15 @@
 
     # Make (for building programs)
     gnumake
-
     # Make dependency
     pkg-config
 
-    # Screenshots
-    jq
+    # Screenshots; wl-clipboard lets you save screenshot to clipboard
     wl-clipboard-rs
     grim
     slurp
 
-    # DWL dependencies
+    # DWL dependencies (You may not need all of them)
     libinput
     libxcb
     libxkbcommon
@@ -177,8 +189,14 @@
     libx11
     xwayland
     wayland-scanner
+
+    # Manage background/wallpaper
     swaybg
+
+    # Track idle state to turn perform action when afk (I turn the screens off)
     swayidle
+
+    # The tool I use to turn screens off. Jiggle mouse to turn back on
     dpms-off
 
     # Status bar widget
@@ -193,16 +211,25 @@
 
     # Allows for easy sh scriptable monitor config
     wlr-randr
+
+    # Track gpu utilization (used in eww bars)
     amdgpu_top
+
+    # Allows you to control playing media. Pause, Back, Forward, etc
     playerctl
 
     # Rust package manager
     cargo
 
-    # Neovim plugin dependencies
+    # Nvim dependencies
     gcc
     unzip
     python3
+    fzf
+    rdfind
+    fd
+    zip
+    # Nvim tools for nix files (formatter and lsp, respectively)
     nixfmt-rfc-style
     nixd
 
@@ -211,6 +238,9 @@
       plugins = with pkgs.obs-studio-plugins; [
         wlrobs
         obs-vaapi
+        # vkcapture allows to capture steam game output
+        # normal screen capture sucks on my system
+        # add obs-gamecapture before %command% in launch options
         obs-vkcapture
       ];
     })
@@ -218,40 +248,62 @@
     # Media
     vlc
 
-    # Discord Client
-    vesktop
+    # Discord Client (Vesktop has been having issues for me lately)
+    # vesktop
     discord
 
     # Dotfiles Manager
+    # Important to preserve .config files in repo to actual via symlinks
     stow
 
     # Used to reshade games using reshade-shaders
+    # Unless you're being sweaty in a competitive game, only get MangoHud
+    # MangoHud is easy to set up and is nice for game performance
+    # Although, goverlay is a nice configuration tool for MangoHud
     mangohud
     vkbasalt
     mesa-demos
     vulkan-tools
     goverlay
 
+    # Best 'top' upgrade imo
     btop
 
-    rose-pine-cursor
-
+    # Basic suite for general purpose
     libreoffice
-    fzf
 
+    # Good to have in this day and age
     tor-browser
 
+    # Edit git commit history :)
     git-filter-repo
+
+    # Graphical file manager
+    # Useful occasionally when I need to drag and drop into browser
     kdePackages.dolphin
 
+    # Backup browser
     firefox
+
+    # Music player
     strawberry
 
-    rdfind
-    fd
-    zip
+    # Speaks for itself
+    wine
+
+    # Lovely video editor
+    kdePackages.kdenlive
+
+    # Tool to manage audio streams. I use this to choose which audio to send to OBS
+    # Basically when I record games, I only want that audio, not my youtube video
+    # This allows you to set that up. Use in combination with OBS JACK Input
+    qpwgraph
   ];
 
+  # Below, I use programs.____.enable when possible
+  # It manages dependencies like a charm, requiring little effort
+
+  # Allows me to be lazy in maintaining my btrfs partition
   services.btrfs.autoScrub.enable = true;
 
   # Hack Nerd Font
@@ -261,6 +313,7 @@
   programs.neovim = {
     enable = true;
   };
+
   # Allows Mason to install a few Neovim LSPs/Formatters
   programs.npm.enable = true;
 
@@ -278,20 +331,25 @@
   # };
 
   # DWL is my preferred WM, and it's pulling from a local directory with my custom config
+  # If anything in that directory changes, a rebuild will recompile it (restart dwl after)
   programs.dwl = {
     enable = true;
     package = pkgs.dwl.overrideAttrs { src = ../dwl; };
   };
 
+  # Allows me to see video from streaming services on qutebrowser
   nixpkgs.overlays = [
     (final: prev: {
       qutebrowser = prev.qutebrowser.override { enableWideVine = true; };
     })
   ];
 
+  # I use flatpak mainly for gimp, due to the photoshop plugin I use
+  # Could I make this happen through nix setup? Maybe, but I have yet to investigate
   services.flatpak.enable = true;
 
-  # xdg-desktop-portal to allow screencasts
+  # xdg-desktop-portal to allow screencasts; I mainly use it for Discord calls
+  # You may have to terminate these processes if something goes wrong during screen share
   xdg.portal = {
     enable = true;
     wlr.enable = true;
@@ -299,6 +357,7 @@
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-wlr
     ];
+    # If you don't use DWL, you can comment this next bit
     config.dwl.default = lib.mkDefault [
       "wlr"
       "gtk"
@@ -318,17 +377,22 @@
   virtualisation.spiceUSBRedirection.enable = true;
   virtualisation.docker.enable = true;
 
-  # Steam...enough said
+  # Steam
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
+
+  # Used for performance. Add gamemode before %command% in steam games launch options
   programs.gamemode.enable = true;
 
+  # Used for gtk coloring, such as title bars and menu options in strawberry, libreoffice, etc
   stylix = {
     enable = true;
+    # You can generate a new theme from an image (read, wallpaper)
+    # I ran it to generate the theme and handjammed that into a yaml so I don't generate every rebuild
     base16Scheme = ./theme.yaml;
     polarity = "dark";
   };
