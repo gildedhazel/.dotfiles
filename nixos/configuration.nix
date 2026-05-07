@@ -214,6 +214,8 @@
 
     # Track gpu utilization (used in eww bars)
     amdgpu_top
+    # JSON processor to parse
+    jq
 
     # Allows you to control playing media. Pause, Back, Forward, etc
     playerctl
