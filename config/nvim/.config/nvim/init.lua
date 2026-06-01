@@ -14,11 +14,11 @@ vim.o.relativenumber = true
 vim.o.mouse = 'a'
 vim.o.showmode = false
 
-vim.lsp.config['yuck'] = {
-  cmd = { 'true' },
-  filetypes = { 'yuck' },
-}
-vim.lsp.enable 'yuck'
+-- vim.lsp.config['yuck'] = {
+--   cmd = { 'true' },
+--   filetypes = { 'yuck' },
+-- }
+-- vim.lsp.enable 'yuck'
 vim.lsp.enable('nixd')
 
 vim.schedule(function()
@@ -334,8 +334,9 @@ require('lazy').setup({
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       local servers = {
-        pyright = {},
+        -- pyright = {},
         -- rust_analyzer = {},
+        -- robotcode = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -350,8 +351,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'isort',
-        'black',
+        -- 'isort',
+        -- 'black',
         -- 'alejandra',
         'nixfmt',
       })
@@ -402,7 +403,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = { 'isort', 'black' },
+        -- python = { 'isort', 'black' },
         nix = { 'nixfmt' },
       },
     },
@@ -574,9 +575,9 @@ require('lazy').setup({
       -- log_level = 'debug',
     },
   },
-  {
-    'elkowar/yuck.vim',
-  },
+  -- {
+  --   'elkowar/yuck.vim',
+  -- },
 
   {
     'MeanderingProgrammer/render-markdown.nvim',
@@ -1343,18 +1344,6 @@ require('lazy').setup({
         -- Additional modes to render yaml.
         render_modes = false,
       },
-    },
-  },
-  {
-    "linux-cultist/venv-selector.nvim",
-    dependencies = {
-      { "nvim-telescope/telescope.nvim", version = "*", dependencies = { "nvim-lua/plenary.nvim" } }, -- optional: you can also use fzf-lua, snacks, mini-pick instead.
-    },
-    ft = "python", -- Load when opening Python files
-    keys = { { ",v", "<cmd>VenvSelect<cr>" } }, -- Open picker on keymap
-    opts = {
-      options = {}, -- plugin-wide options
-      search = {}   -- custom search definitions
     },
   },
 
