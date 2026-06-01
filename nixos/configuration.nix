@@ -333,6 +333,9 @@
   # I prefer zsh over bash or fish
   programs.zsh.enable = true;
 
+  # Enable transfer of files over local network
+  programs.localsend.enable = true;
+
   # Installs mesa for AMD GPUs
   hardware.graphics.enable = true;
 
