@@ -35,10 +35,10 @@
 
   # Why do I have this both here and in configuration.nix?
   # Because you need both for some reason (I think?)
-  stylix = {
-    enable = true;
-    base16Scheme = ./theme.yaml;
-  };
+  # stylix = {
+  #   enable = true;
+  #   base16Scheme = ./theme.yaml;
+  # };
 
   # No touchy
   home.stateVersion = "25.11";

@@ -159,7 +159,7 @@
 
     # Configure sound devices
     pavucontrol
-    helvum
+    # crosspipe
     pamixer
 
     # Package manager used for installing proton-ge
@@ -185,7 +185,7 @@
     pixman
     wayland
     wayland-protocols
-    wlroots_0_18
+    wlroots_0_20
     libx11
     xwayland
     wayland-scanner
@@ -232,7 +232,7 @@
     fd
     zip
     # Nvim tools for nix files (formatter and lsp, respectively)
-    nixfmt-rfc-style
+    nixfmt
     nixd
 
     # OBS Studio
@@ -251,7 +251,7 @@
     vlc
 
     # Discord Client (Vesktop has been having issues for me lately)
-    # vesktop
+    vesktop
     discord
 
     # Dotfiles Manager
@@ -300,6 +300,12 @@
     # Basically when I record games, I only want that audio, not my youtube video
     # This allows you to set that up. Use in combination with OBS JACK Input
     qpwgraph
+
+    # eww ai
+    ollama-rocm
+
+    # E-Books
+    calibre
   ];
 
   # Below, I use programs.____.enable when possible
@@ -307,6 +313,11 @@
 
   # Allows me to be lazy in maintaining my btrfs partition
   services.btrfs.autoScrub.enable = true;
+
+  # Allows calibre to detect kindle
+  services.udisks2.enable = true;
+
+  services.hardware.openrgb.enable = true;
 
   # Hack Nerd Font
   fonts.packages = with pkgs; [ nerd-fonts.hack ];
@@ -391,13 +402,13 @@
   programs.gamemode.enable = true;
 
   # Used for gtk coloring, such as title bars and menu options in strawberry, libreoffice, etc
-  stylix = {
-    enable = true;
-    # You can generate a new theme from an image (read, wallpaper)
-    # I ran it to generate the theme and handjammed that into a yaml so I don't generate every rebuild
-    base16Scheme = ./theme.yaml;
-    polarity = "dark";
-  };
+  # stylix = {
+  #   enable = true;
+  #   # You can generate a new theme from an image (read, wallpaper)
+  #   # I ran it to generate the theme and handjammed that into a yaml so I don't generate every rebuild
+  #   base16Scheme = ./theme.yaml;
+  #   polarity = "dark";
+  # };
 
   # You have to have this for specific programs. If you're missing this portion, it'll tell you when you go to rebuild
   nixpkgs.config.allowUnfreePredicate =

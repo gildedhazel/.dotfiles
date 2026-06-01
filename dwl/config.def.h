@@ -12,7 +12,6 @@ static const unsigned int gappx            = 5; /* gap pixel between windows */
 static const unsigned int borderpx         = 2;  /* border pixel of windows */
 static const float rootcolor[]             = COLOR(0x222222ff);
 static const float bordercolor[]           = COLOR(0x444444ff);
-/*static const float focuscolor[]            = COLOR(0x005577ff);*/
 static const float focuscolor[]            = COLOR(0xffffffff);
 static const float urgentcolor[]           = COLOR(0xff0000ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
@@ -28,18 +27,18 @@ enum {
     SHIFT_R = 2,
 } RotateTags;
 
+#define SCRATCHPAD_COUNT 3
 /* tagging - TAGCOUNT must be no greater than 31 */
 #define TAGCOUNT (9)
 
 /* logging */
 static int log_level = WLR_ERROR;
 
-/* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
 static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor */
-	/* examples: */
 	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
 	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
+    /* default/example rule: can be changed but cannot be eliminated; at least one rule must exist */
 };
 
 /* layout(s) */
@@ -53,17 +52,14 @@ static const Layout layouts[] = {
 
 /* monitors */
 /* (x=-1, y=-1) is reserved as an "autoconfigure" monitor position indicator
- * WARNING: negative values other than (-1, -1) cause problems with Xwayland clients
- * https://gitlab.freedesktop.org/xorg/xserver/-/issues/899
-*/
-/* NOTE: ALWAYS add a fallback rule, even if you are completely sure it won't be used */
+ * WARNING: negative values other than (-1, -1) cause problems with Xwayland clients due to
+ * https://gitlab.freedesktop.org/xorg/xserver/-/issues/899 */
 static const MonitorRule monrules[] = {
-	/* name       mfact  nmaster scale layout       rotate/reflect                x    y */
-	/* example of a HiDPI laptop monitor:
-	{ "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
-	*/
-	/* defaults */
-	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
+   /* name        mfact  nmaster scale layout       rotate/reflect                x    y
+    * example of a HiDPI laptop monitor:
+    { "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 }, */
+    { NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
+	/* default monitor rule: can be changed but cannot be eliminated; at least one monitor rule must exist */
 };
 
 /* keyboard */
@@ -122,7 +118,6 @@ LIBINPUT_CONFIG_TAP_MAP_LMR -- 1/2/3 finger tap maps to left/middle/right
 static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TAP_MAP_LRM;
 
 /* If you want to use the windows key for MODKEY, use WLR_MODIFIER_LOGO */
-/*#define MODKEY WLR_MODIFIER_ALT*/
 #define MODKEY WLR_MODIFIER_LOGO
 
 #define TAGKEYS(KEY,SKEY,TAG) \
@@ -145,8 +140,6 @@ static const char *partialss[] = { "/bin/sh", "-c", "~/.dotfiles/scripts/psscb.s
 static const char *mediaplaypause[] = { "playerctl", "play-pause", NULL };
 static const char *mediaprev[] = { "playerctl", "previous", NULL };
 static const char *medianext[] = { "playerctl", "next", NULL };
-
-/*static const int warpcursorenable = 1;*/
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */

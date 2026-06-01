@@ -1,12 +1,14 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   btrtile.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmakkone <jmakkone@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/15 00:26:07 by jmakkone          #+#    #+#             */
-/*   Updated: 2025/02/13 23:25:03 by jmakkone         ###   ########.fr       */
+/*                                                 @@@            @@@@@@@@    */
+/*                                                  @@@          @@@@@@@@@@   */
+/*                                                   @@!         @@!   @@@@   */
+/*                                                    !@!        !@!  @!@!@   */
+/*   btrtile.c                                         @!!       @!@ @! !@!   */
+/*                                                      !!!      !@!!!  !!!   */
+/*   By: julmajustus <julmajustus@tutanota.com>          !!:     !!:!   !!!   */
+/*                                                        ::!    :!:    !:!   */
+/*   Created: 2024/12/15 00:26:07 by julmajustus           ::    ::::::: ::   */
+/*   Updated: 2026/05/20 22:38:02 by julmajustus            : :   : : :  :    */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +31,8 @@ static LayoutNode *create_split_node(unsigned int is_split_vertically,
 static void destroy_node(LayoutNode *node);
 static void destroy_tree(Monitor *m);
 static LayoutNode *find_client_node(LayoutNode *node, Client *c);
-static LayoutNode *find_suitable_split(LayoutNode *start, unsigned int need_vert);
+static LayoutNode *find_suitable_split(Monitor *m, LayoutNode *start,
+                                       unsigned int need_vertical, int focused_on_left);
 static void init_tree(Monitor *m);
 static void insert_client(Monitor *m, Client *focused_client, Client *new_client);
 static LayoutNode *remove_client_node(LayoutNode *node, Client *c);
@@ -40,7 +43,6 @@ static void swapclients(const Arg *arg);
 static unsigned int visible_count(LayoutNode *node, Monitor *m);
 static Client *xytoclient(double x, double y);
 
-static int resizing_from_mouse = 0;
 static double resize_last_update_x, resize_last_update_y;
 static uint32_t last_resize_time = 0;
 
@@ -67,6 +69,9 @@ apply_layout(Monitor *m, LayoutNode *node,
 	if (node->is_client_node) {
 		c = node->client;
 		if (!c || !VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
+			return;
+		if (area.x == c->old_geom.x && area.y == c->old_geom.y &&
+				area.width == c->old_geom.width && area.height == c->old_geom.height)
 			return;
 		resize(c, area, 0);
 		c->old_geom = area;
@@ -146,7 +151,7 @@ btrtile(Monitor *m)
 	LayoutNode *found;
 	struct wlr_box full_area;
 
-	if (!m || !m->root)
+	if (!m)
 		return;
 
 	/* Remove non tiled clients from tree. */
@@ -248,30 +253,37 @@ find_client_node(LayoutNode *node, Client *c)
 }
 
 LayoutNode *
-find_suitable_split(LayoutNode *start_node, unsigned int need_vertical)
+find_suitable_split(Monitor *m, LayoutNode *start_node,
+		unsigned int need_vertical, int focused_on_left)
 {
-	LayoutNode *n = start_node;
-	/* if we started from a client node, jump to its parent: */
-	if (n && n->is_client_node)
+	LayoutNode *n = start_node, *child = NULL;
+
+	if (!m)
+		return NULL;
+
+	if (n && n->is_client_node) {
+		child = n;
 		n = n->split_node;
+	}
 
 	while (n) {
-		if (!n->is_client_node && n->is_split_vertically == need_vertical &&
-			visible_count(n->left, selmon) > 0 && visible_count(n->right, selmon) > 0)
-			return n;
+		if (!n->is_client_node && n->is_split_vertically == need_vertical
+				&& visible_count(n->left, m) > 0
+				&& visible_count(n->right, m) > 0) {
+			if ((focused_on_left && n->left == child) ||
+			    (!focused_on_left && n->right == child))
+				return n;
+		}
+		child = n;
 		n = n->split_node;
 	}
 	return NULL;
 }
-
 void
 init_tree(Monitor *m)
 {
-	if (!m)
-		return;
-	m->root = calloc(1, sizeof(LayoutNode));
-	if (!m->root)
-		m->root = NULL;
+    if (m)
+       m->root = NULL;
 }
 
 void
@@ -395,21 +407,31 @@ remove_client(Monitor *m, Client *c)
 	m->root = remove_client_node(m->root, c);
 }
 
-void
-setratio_h(const Arg *arg)
+static void
+setratio(unsigned int need_vertical, const Arg *arg)
 {
-	Client *sel = focustop(selmon);
+	Client *sel;
 	LayoutNode *client_node, *split_node;
 	float new_ratio;
+    int focused_on_left;
 
-	if (!sel || !selmon || !selmon->lt[selmon->sellt]->arrange)
+	if (!selmon || !selmon->lt[selmon->sellt]->arrange)
+		return;
+
+	sel = focustop(selmon);
+	if (!sel)
 		return;
 
 	client_node = find_client_node(selmon->root, sel);
 	if (!client_node)
 		return;
 
-	split_node = find_suitable_split(client_node, 1);
+	focused_on_left = (arg->f >= 0.0f);
+
+	split_node = find_suitable_split(selmon, client_node, need_vertical, focused_on_left);
+
+	if (!split_node)
+		split_node = find_suitable_split(selmon, client_node, need_vertical, !focused_on_left);
 	if (!split_node)
 		return;
 
@@ -420,109 +442,87 @@ setratio_h(const Arg *arg)
 		new_ratio = 0.95f;
 	split_node->split_ratio = new_ratio;
 
-	/* Skip the arrange if done resizing by mouse,
-	 * we call arrange from motionotify */
-	if (!resizing_from_mouse) {
-		arrange(selmon);
-	}
+	apply_layout(selmon, selmon->root, selmon->w, 1);
+	/* Skip the arrange when called from motionnotify; that path calls
+	 * arrange itself after rate-limiting. */
+}
+
+void
+setratio_h(const Arg *arg)
+{
+	setratio(1, arg);
 }
 
 void
 setratio_v(const Arg *arg)
 {
-	Client *sel = focustop(selmon);
-	LayoutNode *client_node, *split_node;
-	float new_ratio;
-
-	if (!sel || !selmon || !selmon->lt[selmon->sellt]->arrange)
-		return;
-
-	client_node = find_client_node(selmon->root, sel);
-	if (!client_node)
-		return;
-
-	split_node = find_suitable_split(client_node, 0);
-	if (!split_node)
-		return;
-
-	new_ratio = (arg->f != 0.0f) ? (split_node->split_ratio + arg->f) : 0.5f;
-	if (new_ratio < 0.05f)
-		new_ratio = 0.05f;
-	if (new_ratio > 0.95f)
-		new_ratio = 0.95f;
-	split_node->split_ratio = new_ratio;
-
-	/* Skip the arrange if done resizing by mouse,
-	 * we call arrange from motionotify */
-	if (!resizing_from_mouse) {
-		arrange(selmon);
-	}
+	setratio(0, arg);
 }
 
 void swapclients(const Arg *arg) {
-    Client  *c, *tmp, *target = NULL, *sel = focustop(selmon);
+	Client  *c, *tmp, *target = NULL, *sel = focustop(selmon);
 	LayoutNode *sel_node, *target_node;
-    int closest_dist = INT_MAX, dist, sel_center_x, sel_center_y,
+	int closest_dist = INT_MAX, dist, sel_center_x, sel_center_y,
 	cand_center_x, cand_center_y;
 
-    if (!sel || sel->isfullscreen ||
-        !selmon->root || !selmon->lt[selmon->sellt]->arrange)
-        return;
+	if (!sel || sel->isfullscreen ||
+			!selmon->root || !selmon->lt[selmon->sellt]->arrange)
+		return;
 
 
-    /* Get the center coordinates of the selected client */
-    sel_center_x = sel->geom.x + sel->geom.width / 2;
-    sel_center_y = sel->geom.y + sel->geom.height / 2;
+	/* Get the center coordinates of the selected client */
+	sel_center_x = sel->geom.x + sel->geom.width / 2;
+	sel_center_y = sel->geom.y + sel->geom.height / 2;
 
-    wl_list_for_each(c, &clients, link) {
-        if (!VISIBLEON(c, selmon) || c->isfloating || c->isfullscreen || c == sel)
-            continue;
+	wl_list_for_each(c, &clients, link) {
+		if (!VISIBLEON(c, selmon) || c->isfloating || c->isfullscreen || c == sel)
+			continue;
 
-        /* Get the center of candidate client */
-        cand_center_x = c->geom.x + c->geom.width / 2;
-        cand_center_y = c->geom.y + c->geom.height / 2;
+		/* Get the center of candidate client */
+		cand_center_x = c->geom.x + c->geom.width / 2;
+		cand_center_y = c->geom.y + c->geom.height / 2;
 
-        /* Check that the candidate lies in the requested direction. */
-        switch (arg->ui) {
-            case 0:
-                if (cand_center_x >= sel_center_x)
-                    continue;
-                break;
-            case 1:
-                if (cand_center_x <= sel_center_x)
-                    continue;
-                break;
-            case 2:
-                if (cand_center_y >= sel_center_y)
-                    continue;
-                break;
-            case 3:
-                if (cand_center_y <= sel_center_y)
-                    continue;
-                break;
-            default:
-                continue;
-        }
+		/* Check that the candidate lies in the requested direction. */
+		switch (arg->ui) {
+			case 0:
+				if (cand_center_x >= sel_center_x)
+					continue;
+				break;
+			case 1:
+				if (cand_center_x <= sel_center_x)
+					continue;
+				break;
+			case 2:
+				if (cand_center_y >= sel_center_y)
+					continue;
+				break;
+			case 3:
+				if (cand_center_y <= sel_center_y)
+					continue;
+				break;
+			default:
+				continue;
+		}
 
-        /* Get distance between the centers */
-        dist = abs(sel_center_x - cand_center_x) + abs(sel_center_y - cand_center_y);
-        if (dist < closest_dist) {
-            closest_dist = dist;
-            target = c;
-        }
-    }
+		/* Get distance between the centers */
+		dist = abs(sel_center_x - cand_center_x) + abs(sel_center_y - cand_center_y);
+		if (dist < closest_dist) {
+			closest_dist = dist;
+			target = c;
+		}
+	}
 
-    /* If target is found, swap the two clients’ positions in the layout tree */
-    if (target) {
-        sel_node = find_client_node(selmon->root, sel);
-        target_node = find_client_node(selmon->root, target);
-        if (sel_node && target_node) {
-            tmp = sel_node->client;
-            sel_node->client = target_node->client;
-            target_node->client = tmp;
-            arrange(selmon);
-        }
-    }
+	/* If target is found, swap the two clients’ positions in the layout tree */
+	if (target) {
+		sel_node = find_client_node(selmon->root, sel);
+		target_node = find_client_node(selmon->root, target);
+		if (sel_node && target_node) {
+			tmp = sel_node->client;
+			sel_node->client = target_node->client;
+			target_node->client = tmp;
+			arrange(selmon);
+		}
+	}
 }
 
 unsigned int
@@ -545,11 +545,12 @@ visible_count(LayoutNode *node, Monitor *m)
 
 Client *
 xytoclient(double x, double y) {
+	Monitor *m = xytomon(x, y);
 	Client *c, *closest = NULL;
 	double dist, mindist = INT_MAX, dx, dy;
 
 	wl_list_for_each_reverse(c, &clients, link) {
-		if (VISIBLEON(c, selmon) && !c->isfloating && !c->isfullscreen &&
+		if (VISIBLEON(c, m) && !c->isfloating && !c->isfullscreen &&
 			x >= c->geom.x && x <= (c->geom.x + c->geom.width) &&
 			y >= c->geom.y && y <= (c->geom.y + c->geom.height)){
 			return c;
@@ -558,7 +559,7 @@ xytoclient(double x, double y) {
 
 	/* If no client was found at cursor position fallback to closest. */
 	wl_list_for_each_reverse(c, &clients, link) {
-		if (VISIBLEON(c, selmon) && !c->isfloating && !c->isfullscreen) {
+		if (VISIBLEON(c, m) && !c->isfloating && !c->isfullscreen) {
 			dx = 0, dy = 0;
 
 			if (x < c->geom.x)
@@ -571,7 +572,7 @@ xytoclient(double x, double y) {
 			else if (y > (c->geom.y + c->geom.height))
 				dy = y - (c->geom.y + c->geom.height);
 
-			dist = sqrt(dx * dx + dy * dy);
+			dist = dx * dx + dy * dy;
 			if (dist < mindist) {
 				mindist = dist;
 				closest = c;
