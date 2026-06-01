@@ -159,7 +159,7 @@
 
     # Configure sound devices
     pavucontrol
-    # crosspipe
+    crosspipe
     pamixer
 
     # Package manager used for installing proton-ge
