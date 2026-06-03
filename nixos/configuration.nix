@@ -306,6 +306,9 @@
 
     # E-Books
     calibre
+
+    # Get Reddit karma
+    fastfetch
   ];
 
   # Below, I use programs.____.enable when possible
