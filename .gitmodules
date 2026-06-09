@@ -1,3 +1,6 @@
 [submodule "dwl"]
 	path = dwl
 	url = git@github.com:gildedhazel/dwl.git
+[submodule "config/nvim/.config/nvim"]
+	path = config/nvim/.config/nvim
+	url = git@github.com:gildedhazel/nvim.git
