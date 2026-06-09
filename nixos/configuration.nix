@@ -309,6 +309,9 @@
 
     # Get Reddit karma
     fastfetch
+
+    # See which clients are using x11
+    xlsclients
   ];
 
   # Below, I use programs.____.enable when possible
