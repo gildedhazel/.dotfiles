@@ -317,6 +317,12 @@
   # Allows me to be lazy in maintaining my btrfs partition
   services.btrfs.autoScrub.enable = true;
 
+  # Optimizes store every night
+  nix.optimise = {
+    automatic = true;
+    dates = [ "02:00" ];
+  };
+
   # Allows calibre to detect kindle
   services.udisks2.enable = true;
 
