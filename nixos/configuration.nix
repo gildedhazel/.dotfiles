@@ -408,13 +408,13 @@
   programs.gamemode.enable = true;
 
   # Used for gtk coloring, such as title bars and menu options in strawberry, libreoffice, etc
-  # stylix = {
-  #   enable = true;
-  #   # You can generate a new theme from an image (read, wallpaper)
-  #   # I ran it to generate the theme and handjammed that into a yaml so I don't generate every rebuild
-  #   base16Scheme = ./theme.yaml;
-  #   polarity = "dark";
-  # };
+  stylix = {
+    enable = true;
+    # You can generate a new theme from an image (read, wallpaper)
+    # I ran it to generate the theme and handjammed that into a yaml so I don't generate every rebuild
+    base16Scheme = ./theme.yaml;
+    polarity = "dark";
+  };
 
   # You have to have this for specific programs. If you're missing this portion, it'll tell you when you go to rebuild
   nixpkgs.config.allowUnfreePredicate =

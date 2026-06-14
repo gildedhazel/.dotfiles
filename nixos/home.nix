@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 # Not sure why I couldn't get this plugin to work, but oh well
 # let
@@ -35,14 +40,14 @@
 
   # Why do I have this both here and in configuration.nix?
   # Because you need both for some reason (I think?)
-  # stylix = {
-  #   enable = true;
-  #   base16Scheme = ./theme.yaml;
-  # };
+  stylix = {
+    enable = true;
+    base16Scheme = ./theme.yaml;
+  };
 
   qt = {
     enable = true;
-    style.name = "adwaita-dark";
+    style.name = "kvantum";
   };
 
   # No touchy
