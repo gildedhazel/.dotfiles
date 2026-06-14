@@ -40,6 +40,11 @@
   #   base16Scheme = ./theme.yaml;
   # };
 
+  qt = {
+    enable = true;
+    style.name = "adwaita-dark";
+  };
+
   # No touchy
   home.stateVersion = "25.11";
   programs.home-manager.enable = true;
