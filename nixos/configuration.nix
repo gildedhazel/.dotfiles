@@ -309,6 +309,9 @@
 
     # Get Reddit karma
     fastfetch
+
+    # Easily record audio
+    audacity
   ];
 
   # Below, I use programs.____.enable when possible
