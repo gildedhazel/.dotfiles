@@ -43,6 +43,10 @@
   fileSystems."/home/hazel/storage" = {
     device = "/dev/disk/by-label/STORAGE";
     fsType = "btrfs";
+    options = [
+      "uid=hazel"
+      "gid=users"
+    ];
   };
 
   swapDevices = [ ];
