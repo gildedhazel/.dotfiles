@@ -312,6 +312,9 @@
 
     # Easily record audio
     audacity
+
+    # Allow formatting of partitions to NTFS
+    ntfs3g
   ];
 
   # Below, I use programs.____.enable when possible
