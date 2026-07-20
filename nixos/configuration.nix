@@ -348,7 +348,8 @@
   # I prefer zsh over bash or fish
   programs.zsh = {
     enable = true;
-    ohMyZsh.enable = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
   };
 
   # Enable transfer of files over local network
