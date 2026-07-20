@@ -10,5 +10,7 @@ settings:
     https://video.simplepractice.com: true
   content.mouse_lock:
     https://loadout.tf: false
+  qt.workarounds.disable_accelerated_2d_canvas:
+    global: auto
   url.default_page:
     global: https://kagi.com

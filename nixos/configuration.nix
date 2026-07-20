@@ -346,7 +346,10 @@
   programs.npm.enable = true;
 
   # I prefer zsh over bash or fish
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    ohMyZsh.enable = true;
+  };
 
   # Enable transfer of files over local network
   programs.localsend.enable = true;

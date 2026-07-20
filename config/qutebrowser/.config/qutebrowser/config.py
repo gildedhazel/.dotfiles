@@ -1,4 +1,5 @@
 config.load_autoconfig()
+c.qt.args = ["disable-gpu"]
 c.url.default_page = "https://kagi.com/"
 c.url.start_pages = ["https://kagi.com/"]
 c.url.searchengines = {

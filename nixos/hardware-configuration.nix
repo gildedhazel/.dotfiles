@@ -44,8 +44,8 @@
     device = "/dev/disk/by-label/STORAGE";
     fsType = "btrfs";
     options = [
-      "uid=hazel"
-      "gid=users"
+      "user=hazel"
+      "group=users"
     ];
   };
 
