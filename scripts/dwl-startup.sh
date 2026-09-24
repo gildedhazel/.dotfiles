@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Kill already running duplicate process
-_ps="eww end-rs swaybg swayidle"
+_ps="eww dunst swaybg swayidle"
 for _prs in $_ps; do
     if [ "$(pidof "${_prs}")" ]; then
          killall -9 "${_prs}"

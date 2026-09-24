@@ -315,6 +315,9 @@
 
     # Allow formatting of partitions to NTFS
     ntfs3g
+
+    efibootmgr
+    chromium
   ];
 
   # Below, I use programs.____.enable when possible
@@ -377,6 +380,9 @@
     (final: prev: {
       qutebrowser = prev.qutebrowser.override { enableWideVine = true; };
     })
+    (final: prev: {
+      chromium = prev.chromium.override { enableWideVine = true; };
+    })
   ];
 
   # I use flatpak mainly for gimp, due to the photoshop plugin I use
@@ -407,8 +413,8 @@
 
   # Virtualization
   programs.virt-manager.enable = true;
-  users.groups.libvirtd.members = [ "hazel" ];
-  virtualisation.libvirtd.enable = true;
+  # users.groups.libvirtd.members = [ "hazel" ];
+  # virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
   virtualisation.docker.enable = true;
 
@@ -443,5 +449,7 @@
       "widevine-cdm"
       "castlabs-electron"
       "discord"
+      "chromium"
+      "chromium-unwrapped"
     ];
 }

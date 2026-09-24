@@ -43,6 +43,11 @@
   stylix = {
     enable = true;
     base16Scheme = ./theme.yaml;
+    cursor = {
+      name = "BreezeX-RosePineDawn-Linux";
+      package = pkgs.rose-pine-cursor;
+      size = 18;
+    };
   };
 
   qt = {
