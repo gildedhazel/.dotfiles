@@ -124,15 +124,15 @@
   (literal :class "workspaces" :content {dwl-workspaces})
 )
 
-(deflisten dwl-workspaces-dp "./scripts/dwl-workspaces-dp.sh")
+(deflisten dwl-workspaces-dp "./scripts/dwl-workspaces.sh DP-1")
 (defwidget workspaces-dp []
   (label :class "workspaces" :text {dwl-workspaces-dp})
 )
-(deflisten dwl-workspaces-dp-2 "./scripts/dwl-workspaces-dp-2.sh")
+(deflisten dwl-workspaces-dp-2 "./scripts/dwl-workspaces.sh DP-2")
 (defwidget workspaces-dp-2 []
   (label :class "workspaces" :text {dwl-workspaces-dp-2})
 )
-(deflisten dwl-workspaces-hdmi "./scripts/dwl-workspaces-hdmi.sh")
+(deflisten dwl-workspaces-hdmi "./scripts/dwl-workspaces.sh HDMI-A-2")
 (defwidget workspaces-hdmi []
   (label :class "workspaces" :text {dwl-workspaces-hdmi})
 )
