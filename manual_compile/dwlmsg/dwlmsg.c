@@ -31,6 +31,7 @@ static int cflag;
 static int vflag;
 static int mflag;
 static int fflag;
+static int Gflag;
 
 static uint32_t occ, seltags, sel, urg;
 
@@ -52,8 +53,6 @@ static size_t outputcount;
 static struct wl_display *display;
 static struct wl_registry *registry;
 static struct zdwl_ipc_manager_v2 *dwl_ipc_manager;
-
-static void noop(){}
 
 static void
 dwl_ipc_tags(void *data, struct zdwl_ipc_manager_v2 *dwl_ipc_manager, uint32_t count)
@@ -162,6 +161,15 @@ dwl_ipc_output_floating(void *data, struct zdwl_ipc_output_v2 *dwl_ipc_output,
 }
 
 static void
+dwl_ipc_output_focused_geometry(void *data, struct zdwl_ipc_output_v2 *dwl_ipc_output,
+    int32_t x, int32_t y, int32_t width, int32_t height)
+{
+    if (!Gflag) return;
+    if (data) printf("%s ", (char *)data);
+    printf("geometry %d %d %d %d\n", x, y, width, height);
+}
+
+static void
 dwl_ipc_output_frame(void *data, struct zdwl_ipc_output_v2 *dwl_ipc_output)
 {
 	if (mode & SET) {
@@ -265,6 +273,7 @@ static const struct zdwl_ipc_output_v2_listener dwl_ipc_output_listener = {
 	.layout_symbol = dwl_ipc_output_layout_symbol,
 	.fullscreen = dwl_ipc_output_fullscreen,
 	.floating = dwl_ipc_output_floating,
+	.focused_geometry = dwl_ipc_output_focused_geometry,
 	.frame = dwl_ipc_output_frame,
 };
 
@@ -289,13 +298,37 @@ wl_output_name(void *data, struct wl_output *output, const char *name)
 	}
 }
 
+static void
+wl_output_geometry(void *data, struct wl_output *wl_output, int32_t x, int32_t y, int32_t w, int32_t h, int32_t subpixel, const char *make, const char *model, int32_t transform) {
+}
+
+static void
+wl_output_mode(void *data, struct wl_output *wl_output, uint32_t flags, int32_t width, int32_t height, int32_t refresh)
+{
+}
+
+static void
+wl_output_done(void *data, struct wl_output *wl_output)
+{
+}
+
+static void
+wl_output_scale(void *data, struct wl_output *wl_output, int32_t factor)
+{
+}
+
+static void
+wl_output_description(void *data, struct wl_output *output, const char *description)
+{
+}
+
 static const struct wl_output_listener output_listener = {
-	.geometry = noop,
-	.mode = noop,
-	.done = noop,
-	.scale = noop,
+	.geometry = wl_output_geometry,
+	.mode = wl_output_mode,
+	.done = wl_output_done,
+	.scale = wl_output_scale,
 	.name = wl_output_name,
-	.description = noop,
+	.description = wl_output_description,
 };
 
 static void
@@ -371,7 +404,7 @@ main(int argc, char *argv[])
 		break;
 	case 'o':
 		if (mode & SET)
-		        output_name = EARGF(usage(1));
+			output_name = EARGF(usage(1));
 		else if (mode & GET || !(output_name = ARGF()))
 			oflag = 1;
 		break;
@@ -431,6 +464,11 @@ main(int argc, char *argv[])
 		if (mode & SET) usage(1);
 		mode |= GET;
 		break;
+	case 'G':
+		Gflag = 1;
+		if (mode & SET) usage(1);
+		mode |= GET;
+		break;
 	default:
 		fprintf(stderr, "%s: bad option: -%c\n", argv0, ARGC());
 		usage(1);
@@ -443,7 +481,7 @@ main(int argc, char *argv[])
 		usage(1);
 	}
 	if (mode == NONE) usage(1);
-	if (mode & GET && !(oflag || tflag || lflag || Oflag || Tflag || Lflag || Pflag || cflag || vflag || mflag || fflag))
+	if (mode & GET && !(oflag || tflag || lflag || Oflag || Tflag || Lflag || Pflag || cflag || vflag || mflag || fflag || Gflag))
 		oflag = tflag = lflag = cflag = vflag = mflag = fflag = 1;
 
 	display = wl_display_connect(NULL);
@@ -466,7 +504,7 @@ main(int argc, char *argv[])
 	wl_display_dispatch(display);
 	wl_display_roundtrip(display);
 
-	if (!dwl_ipc_manager && (mode & SET || tflag || lflag || Tflag || Lflag || cflag || vflag || mflag || fflag))
+	if (!dwl_ipc_manager && (mode & SET || tflag || lflag || Tflag || Lflag || cflag || vflag || mflag || fflag || Gflag))
 		die("bad dwl-ipc protocol");
 
 	wl_display_roundtrip(display);

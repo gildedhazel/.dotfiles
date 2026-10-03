@@ -1,7 +1,7 @@
 BINS = dwlmsg
 
 PREFIX ?= /usr/local
-CFLAGS += -Wall -Wextra -Wno-unused-parameter -std=gnu17
+CFLAGS += -Wall -Wextra -Wno-unused-parameter
 PKG_CONFIG = pkg-config
 PKGS = wayland-client
 CFLAGS += `$(PKG_CONFIG) --cflags $(PKGS)`

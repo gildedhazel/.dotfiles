@@ -1,9 +1,10 @@
-dwlmsg - send ipc messages to dwl
+# dwlmsg - send ipc messages to dwl
 
 usage:	dwlmsg [-OTLP]
 	dwlmsg [-o <output>] -s [-t <tags>] [-l <layout>] [-c <tags>]
 	dwlmsg [-o <output>] (-g | -w) [-Ootlcvmf]
 
+```
 options:
 -g	get
 -s	set
@@ -19,6 +20,8 @@ options:
 -v	get visibility of statusbar
 -m	get fullscreen status
 -f	get floating status
+-G	get focused client geometry (<output> geometry <x> <y> <w> <h>)
+```
 
 examples:
 	# act like dwl stdout
@@ -50,3 +53,8 @@ examples:
 
 	# switch to floating layout
 	dwlmsg -l '><>'
+
+	# fetch the focused client geometry
+	dwlmsg -gG
+
+Original author of dwlmsg: [notchoc](https://codeberg.org/notchoc/dwlmsg)

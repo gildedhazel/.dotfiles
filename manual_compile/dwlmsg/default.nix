@@ -1,10 +1,11 @@
 # default nix
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.11";
+  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-26.05";
   pkgs = import nixpkgs {
-    config = {};
-    overlay = [];
+    config = { };
+    overlay = [ ];
   };
-in {
-  dwlmsg = pkgs.callPackage ./dwlmsg-build.nix {};
+in
+{
+  dwlmsg = pkgs.callPackage ./dwlmsg-build.nix { };
 }

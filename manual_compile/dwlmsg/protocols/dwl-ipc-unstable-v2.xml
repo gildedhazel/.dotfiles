@@ -177,5 +177,15 @@ I would probably just submit raphi's patchset but I don't think that would be po
       </description>
       <arg name="is_floating" type="uint" summary="If the selected client is floating. Nonzero is valid, zero invalid"/>
     </event>
-  </interface>
+
+    <event name="focused_geometry" since="2">
+      <description summary="Send focused client geometry">
+          Sends the focused client's geometry (x, y, width, and height) to the client.
+      </description>
+      <arg name="x" type="int" summary="X coordinate of the focused client"/>
+      <arg name="y" type="int" summary="Y coordinate of the focused client"/>
+      <arg name="width" type="int" summary="Width of the focused client"/>
+      <arg name="height" type="int" summary="Height of the focused client"/>
+    </event>
+</interface>
 </protocol>
