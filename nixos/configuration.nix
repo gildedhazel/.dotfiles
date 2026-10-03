@@ -185,7 +185,7 @@
     pixman
     wayland
     wayland-protocols
-    wlroots_0_20
+    wlroots
     libx11
     xwayland
     wayland-scanner
