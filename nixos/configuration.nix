@@ -27,6 +27,7 @@
 
   # We want systemd, hence the line below. It does have a requirement, so look that up
   boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # Computer name. Simple as.
   networking.hostName = "nixos"; # Define your hostname.
@@ -181,11 +182,12 @@
     # DWL dependencies (You may not need all of them)
     libinput
     libxcb
+    libxcb-wm
     libxkbcommon
     pixman
     wayland
     wayland-protocols
-    wlroots
+    wlroots_0_20
     libx11
     xwayland
     wayland-scanner
@@ -372,7 +374,22 @@
   # If anything in that directory changes, a rebuild will recompile it (restart dwl after)
   programs.dwl = {
     enable = true;
-    package = pkgs.dwl.overrideAttrs { src = ../dwl; };
+    package = pkgs.dwl.overrideAttrs {
+      buildInputs = [
+        pkgs.libinput
+        pkgs.libxcb
+        pkgs.libxcb-wm
+        pkgs.libxkbcommon
+        pkgs.pixman
+        pkgs.wayland
+        pkgs.wayland-protocols
+        pkgs.wlroots_0_20
+        pkgs.libx11
+        pkgs.xwayland
+        pkgs.wayland-scanner
+      ];
+      src = ../dwl;
+    };
   };
 
   # Allows me to see video from streaming services on qutebrowser
@@ -405,6 +422,11 @@
     ];
   };
 
+  systemd.user.services.xdg-desktop-portal-wlr.environment = {
+    WAYLAND_DISPLAY = "wayland-0";
+    XDG_CURRENT_DESKTOP = "wlroots";
+  };
+
   # Login scren; calls dwl-startup.sh script which sets everything up
   services.greetd = {
     enable = true;
@@ -425,6 +447,8 @@
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
+
+  programs.gamescope.enable = true;
 
   # Used for performance. Add gamemode before %command% in steam games launch options
   programs.gamemode.enable = true;
